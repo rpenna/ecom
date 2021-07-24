@@ -3,6 +3,10 @@ import re
 class Validator:
     """Class for validating data
     """
+
+    #def __remove_dashes_dots_and_whitespaces(self, cpf: str) -> str:
+    #    return cpf.replace('-', '').replace('.', '').strip()
+     
     def validate_cpf(self, cpf: str) -> bool:
         """Validate cpf string, containing no special chars
 
@@ -12,7 +16,7 @@ class Validator:
         Returns:
             bool: True if CPF is valid
         """
-        cpf = cpf.replace('-', '').replace('.', '')
+        cpf = cpf.replace('-', '').replace('.', '').strip()
         if len(cpf) != 11:
             return False
         re_pattern = re.compile(r'^\d{11}$')
