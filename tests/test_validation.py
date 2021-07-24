@@ -54,3 +54,11 @@ def test_should_validate_cpf_containing_dashes_and_dots(validator):
     assert validator.validate_cpf('046.960.300-32')
     assert validator.validate_cpf('858.664.030-13')
     assert validator.validate_cpf('753.394.110-10')
+
+def test_should_validate_cpf_containing_trailing_whitespaces(validator):
+    assert validator.validate_cpf('753.394.110-10 ')
+    assert validator.validate_cpf('753.394.110-10  ')
+
+def test_should_validate_cpf_containing_leading_whitespaces(validator):
+    assert validator.validate_cpf('  753.394.110-10')
+    assert validator.validate_cpf(' 753.394.110-10')
