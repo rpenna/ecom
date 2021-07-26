@@ -1,5 +1,34 @@
+from .product_unavailable import ProductUnavailable
 from .invalid_cpf import InvalidCpf
 from .validator import Validator
+
+inventory = [
+    {
+        'description': 'book',
+        'price': 19.9,
+        'quantity': 50
+    },
+    {
+        'description': 'pff2 mask',
+        'price': 2.8,
+        'quantity': 1000
+    },
+    {
+        'description': 'vacuum cleaner',
+        'price': 227.99,
+        'quantity': 5
+    },
+    {
+        'description': 'microwave',
+        'price': 459.99,
+        'quantity': 2
+    },
+    {
+        'description': 'queen album',
+        'price': 50,
+        'quantity': 0
+    }
+]
 
 class Order:
     def __init__(self, cpf: str):
@@ -20,6 +49,25 @@ class Order:
         """
         return round(value, 2)
 
+    def __get_product_from_inventory(self, description: str, quantity: int) -> int:
+        """Checks if the product descripted is availabe, removing the quantity
+        wished
+
+        Args:
+            description (str): description of the product
+            quantity (int): quantity of products wished
+
+        Returns:
+            int: quantity of items removed from inventory
+        """
+        for product in inventory:
+            if product.get('description') == description:
+                if product.get('quantity') >= quantity:
+                    product['quantity'] -= quantity
+                    return quantity
+                return 0
+        return 0
+
     def add_to_cart(self, description: str, price: float, quantity: int) -> float:
         """Add new product to the order, returning the total price of the 
         product
@@ -29,9 +77,15 @@ class Order:
             price (float): price of the product
             quantity (int): quantity of products added
 
+        Raises:
+            ProductUnavailable: not enough products availabe on inventory
+
         Returns:
             float: total price of the product
         """
+        product = self.__get_product_from_inventory(description, quantity)
+        if not product:
+            raise ProductUnavailable
         self.__cart.append(
             {
                 'description': description,
