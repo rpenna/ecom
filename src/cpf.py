@@ -1,10 +1,19 @@
 import re
+from .invalid_cpf import InvalidCpf
 
 CPF_LENGTH = 11
 
-class Validator:
+class Cpf:
     """Class for validating data
     """
+    def __init__(self, value: str):
+        if not self.__validate(value):
+            raise InvalidCpf
+        self.__value = value
+
+    @property
+    def value(self):
+        return self.__value
 
     def __remove_dashes_dots_and_whitespaces(self, cpf: str) -> str:
         """Remove all dashes and dots from the CPF, then trims the content
@@ -51,7 +60,7 @@ class Validator:
             return '0'
         return str(checking_digit)
 
-    def validate_cpf(self, cpf: str) -> bool:
+    def __validate(self, cpf: str) -> bool:
         """Validate cpf string, containing no special chars
 
         Args:
