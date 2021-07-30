@@ -18,7 +18,7 @@ def order_three_products():
     return order
 
 
-def test_should_close_order_with_three_products(order_three_products):
+def test_should_accept_order_with_three_products(order_three_products):
     assert order_three_products.get_total() == Decimal('303.89')
 
 def test_should_apply_discount(order_three_products):
@@ -26,6 +26,6 @@ def test_should_apply_discount(order_three_products):
     order_three_products.add_discount_coupon(coupon)
     assert order_three_products.get_total() == Decimal('273.50')
 
-def test_should_deny_close_order_with_invalid_cpf():
+def test_should_deny_creating_order_with_invalid_cpf():
     with pytest.raises(InvalidCpf):
         order = Order('30291840050')
