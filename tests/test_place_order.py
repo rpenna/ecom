@@ -1,10 +1,11 @@
-# TODO: create tests for place order use case. They must not know anything about the entities.
 import pytest
 from decimal import Decimal
+from datetime import datetime, timedelta
 
 from ..src.place_order import PlaceOrder
 
 def test_should_place_order_containing_three_products():
+    next_week = datetime.now() + timedelta(days=7)
     order = {
         'cart': [
             {
@@ -25,7 +26,8 @@ def test_should_place_order_containing_three_products():
         ],
         'coupon': {
             'code': '15off',
-            'discount': 15
+            'discount': 15,
+            'expiring_date': next_week
         },
         'cpf': '01234567890'
     }
