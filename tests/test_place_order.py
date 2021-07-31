@@ -31,4 +31,4 @@ def test_should_place_order_containing_three_products():
     }
     place_order = PlaceOrder()
     order_summary = place_order.execute(order)
-    assert order_summary['total'] == Decimal('411.49')
+    assert order_summary['total'] == Decimal('349.77')
