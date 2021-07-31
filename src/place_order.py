@@ -32,7 +32,8 @@ class PlaceOrder:
         """
         code = coupon.get('code')
         discount = coupon.get('discount')
-        coupon = Coupon(code, discount)
+        expiring_date = coupon.get('expiring_date')
+        coupon = Coupon(code, discount, expiring_date)
         self.__order.add_discount_coupon(coupon)
 
     def execute(self, data: dict) -> dict:
