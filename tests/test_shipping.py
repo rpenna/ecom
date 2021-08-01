@@ -21,6 +21,12 @@ CHARACTERISTICS_FRIDGE = {
     'depth': 50,
     'weight': 40000
 }
+CHEAP_FEE = {
+    'height': 10,
+    'width': 10,
+    'depth': 5,
+    'weight': 500
+}
 
 @pytest.fixture
 def three_products():
@@ -49,3 +55,9 @@ def test_should_calculate_shipping_of_three_products(three_products):
     distance = 1000
     shipping = Shipping(distance, three_products)
     assert shipping.get_total() == 440
+
+def test_should_minimum_shipping_fee_must_be_ten():
+    product = Product('small product', 1, 1, CHEAP_FEE)
+    distance = 1000
+    shipping = Shipping(distance, [product])
+    assert shipping.get_total() == 10
