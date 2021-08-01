@@ -1,3 +1,5 @@
+MINIMUM_FEE = 10
+
 class Shipping:
     def __init__(self, distance: float, products: list):
         """Constructor
@@ -20,4 +22,4 @@ class Shipping:
             volume = product.get_volume()
             density = product.get_density()
             total_fee += self.__distance * volume * (density/100)
-        return total_fee
+        return total_fee if total_fee > MINIMUM_FEE else MINIMUM_FEE
