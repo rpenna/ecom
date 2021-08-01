@@ -2,6 +2,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from .coupon import Coupon
 from .product import Product
+from .shipping import Shipping
 from .cpf import Cpf
 
 class Order:
@@ -28,7 +29,7 @@ class Order:
         cents = Decimal('.01')
         return amount.quantize(cents, ROUND_HALF_UP)
 
-    def add_to_cart(self, description: str, price: float, quantity: int) -> float:
+    def add_to_cart(self, description: str, price: float, quantity: int, info: dict) -> float:
         """Add new product to the order, returning the total price of the 
         product
 
@@ -36,6 +37,7 @@ class Order:
             description (str): Description of the product
             price (float): price of the product
             quantity (int): quantity of products added
+            info (dict): product's technical infos
 
         Raises:
             ProductUnavailable: not enough products availabe on inventory
@@ -43,7 +45,7 @@ class Order:
         Returns:
             float: total price of the product
         """
-        product = Product(description, price, quantity)
+        product = Product(description, price, quantity, info)
         self.__cart.append(product)
 
     def add_discount_coupon(self, coupon: Coupon) -> None:
@@ -54,8 +56,11 @@ class Order:
         """
         self.__coupon = coupon
 
-    def get_total(self):
+    def get_total(self, distance: float):
         """Calculate the current total price of the order
+
+        Args:
+            distance (float): distance from the storage to delivery address
 
         Returns:
             float: total price
@@ -65,4 +70,7 @@ class Order:
             total += product.get_total()
         if self.__coupon is not None:
             total = self.__coupon.apply_discount(total)
+        shipping = Shipping(distance, self.__cart)
+        shipping_fee = shipping.get_total()
+        total += shipping_fee
         return self.__to_money(total)

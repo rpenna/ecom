@@ -18,7 +18,8 @@ class PlaceOrder:
             self.__order.add_to_cart(
                 product.get('description'),
                 product.get('price'),
-                product.get('quantity')
+                product.get('quantity'),
+                product.get('info')
             )
 
     def __apply_discount(self, coupon: dict) -> None:
@@ -50,6 +51,7 @@ class PlaceOrder:
         self.__add_products_to_cart(data.get('cart', []))
         if 'coupon' in data:
             self.__apply_discount(data['coupon'])
+        distance = 1000
         summary = data
-        summary['total'] = self.__order.get_total()
+        summary['total'] = self.__order.get_total(distance)
         return summary
