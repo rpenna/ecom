@@ -56,6 +56,18 @@ class Order:
         """
         self.__coupon = coupon
 
+    def __add_shipping_fee(self, distance: float) -> float:
+        """Get shipping fee
+
+        Args:
+            distance (float): distance from the storage to delivery address
+
+        Returns:
+            float: shipping fee
+        """
+        shipping = Shipping(distance, self.__cart)
+        return  shipping.get_total()
+
     def get_total(self, distance: float):
         """Calculate the current total price of the order
 
@@ -70,7 +82,5 @@ class Order:
             total += product.get_total()
         if self.__coupon is not None:
             total = self.__coupon.apply_discount(total)
-        shipping = Shipping(distance, self.__cart)
-        shipping_fee = shipping.get_total()
-        total += shipping_fee
+        total += self.__add_shipping_fee(distance)
         return self.__to_money(total)
