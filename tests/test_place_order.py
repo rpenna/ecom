@@ -11,17 +11,35 @@ def test_should_place_order_containing_three_products():
             {
                 'description': 'book',
                 'price': 19.9,
-                'quantity': 5
+                'quantity': 5,
+                'info': {
+                    'height': 15,
+                    'width': 10,
+                    'depth': 2,
+                    'weight': 1000
+                }
             },
             {
                 'description': 'pff2 mask',
                 'price': 2.8,
-                'quantity': 30
+                'quantity': 30,
+                'info': {
+                    'height': 10,
+                    'width': 10,
+                    'depth': 0.01,
+                    'weight': 50
+                }
             },
             {
                 'description': 'vacuum cleaner',
                 'price': 227.99,
-                'quantity': 1
+                'quantity': 1,
+                'info': {
+                    'height': 40,
+                    'width': 30,
+                    'depth': 30,
+                    'weight': 5000
+                }
             }
         ],
         'coupon': {
@@ -33,4 +51,4 @@ def test_should_place_order_containing_three_products():
     }
     place_order = PlaceOrder()
     order_summary = place_order.execute(order)
-    assert order_summary['total'] == Decimal('349.77')
+    assert order_summary['total'] == Decimal('410.27')
