@@ -54,7 +54,8 @@ class Order:
         Args:
             coupon (Coupon): coupon to be added
         """
-        self.__coupon = coupon
+        if not coupon.is_expired():
+            self.__coupon = coupon
 
     def __add_shipping_fee(self, distance: float) -> float:
         """Get shipping fee
@@ -68,6 +69,20 @@ class Order:
         shipping = Shipping(distance, self.__cart)
         return  shipping.get_total()
 
+    def __apply_discount(self, amount: float) -> float:
+        """Applies discount related to the coupon
+
+        Args:
+            amount (float): value to be discounted
+
+        Returns:
+            float: discounted value
+        """
+        if self.__coupon is None:
+            return amount
+        percentage = self.__coupon.discount_percentage/100
+        return amount * (1 - percentage)
+
     def get_total(self, distance: float):
         """Calculate the current total price of the order
 
@@ -80,7 +95,6 @@ class Order:
         total = 0
         for product in self.__cart:
             total += product.get_total()
-        if self.__coupon is not None:
-            total = self.__coupon.apply_discount(total)
+        total = self.__apply_discount(total)
         total += self.__add_shipping_fee(distance)
         return self.__to_money(total)
