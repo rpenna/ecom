@@ -1,15 +1,10 @@
 class Product:
-    def __init__(self, description: str, price: float, quantity: int, info: dict):
+    def __init__(self, description: str, price: float, info: dict):
         self.__description = description
         self.__price = price
-        self.__quantity = quantity
         self.__info = info
         self.__volume = None
         self.__density = None
-
-    @property
-    def description(self):
-        return self.__description
 
     def get_volume(self) -> float:
         """Calculate the product volume according to its dimensions
@@ -34,12 +29,3 @@ class Product:
         weight = self.__info['weight'] / 1000
         self.__density = weight / self.__volume
         return self.__density
-
-    def get_total(self) -> float:
-        """Calculates total price of the product according to its price and 
-        quantity
-
-        Returns:
-            float: Total price
-        """
-        return self.__price * self.__quantity
