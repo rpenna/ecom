@@ -1,7 +1,7 @@
 from decimal import Decimal, ROUND_HALF_UP
 
 from .coupon import Coupon
-from .product import Product
+from .order_product import OrderProduct
 from .shipping import Shipping
 from .cpf import Cpf
 
@@ -32,7 +32,7 @@ class Order:
     def add_to_cart(self, description: str, price: float, quantity: int, info: dict) -> float:
         """Add new product to the order, returning the total price of the 
         product
-
+ 
         Args:
             description (str): Description of the product
             price (float): price of the product
@@ -45,7 +45,7 @@ class Order:
         Returns:
             float: total price of the product
         """
-        product = Product(description, price, quantity, info)
+        product = OrderProduct(description, price, quantity, info)
         self.__cart.append(product)
 
     def add_discount_coupon(self, coupon: Coupon) -> None:
