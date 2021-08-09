@@ -7,6 +7,10 @@ class Coupon:
         self.__expiring_date = expiring_date
 
     @property
+    def code(self):
+        return self.__code
+
+    @property
     def discount_percentage(self):
         return self.__discount_percentage
 

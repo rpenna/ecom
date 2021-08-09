@@ -1,10 +1,19 @@
 class Product:
-    def __init__(self, description: str, price: float, info: dict):
+    def __init__(self, id: str, description: str, price: float, info: dict):
+        self.__id = id
         self.__description = description
         self.__price = price
         self.__info = info
         self.__volume = None
         self.__density = None
+
+    @property
+    def id(self):
+        return self.__id
+
+    @property
+    def price(self):
+        return self.__price
 
     def get_volume(self) -> float:
         """Calculate the product volume according to its dimensions
