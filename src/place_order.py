@@ -6,6 +6,7 @@ from .product import Product
 from .place_order_input import PlaceOrderInput
 from .place_order_output import PlaceOrderOutput
 from .shipping_calculator import ShippingCalculator
+from .zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
 from .product_not_found import ProductNotFound
 from.coupon_not_found import CouponNotFound
 
@@ -40,6 +41,7 @@ INVALID_COUPON10 = Coupon('10OFFINVALID', 15, EXPIRED_DATE)
 class PlaceOrder:
     def __init__(self):
         self.__order = None
+        self.__zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
         self.__products = [
             BOOK,
             PFF2_MASK,
@@ -125,7 +127,7 @@ class PlaceOrder:
             key, which informs the total amount of the order.
         """
         self.__order = Order(input.cpf)
-        distance = 1000
+        distance = self.__zipcode_calculator.calculate(input.zipcode)
         for product in input.products:
             available_product = self.__get_product_by_id(product.get('id'))
             quantity = product.get('quantity')
