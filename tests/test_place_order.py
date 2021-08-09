@@ -26,7 +26,8 @@ def test_should_place_order_containing_three_products():
     ]
     coupon = '15OFF'
     cpf = '01234567890'
-    input = PlaceOrderInput(cpf, products, coupon)
+    zipcode = '1234567'
+    input = PlaceOrderInput(cpf, products, zipcode, coupon)
     place_order = PlaceOrder()
     output = place_order.execute(input)
     assert output.total == Decimal('349.77')
