@@ -3,23 +3,23 @@ import pytest
 from ..src.shipping_calculator import ShippingCalculator
 from ..src.product import Product
 
-CHARACTERISTICS_CAMERA = {
-    'height': 20,
-    'width': 15,
-    'depth': 10,
+CHARACTERISTICS_BOOK = {
+    'height': 15,
+    'width': 10,
+    'depth': 2,
     'weight': 1000
 }
-CHARACTERISTICS_GUITAR = {
-    'height': 200,
-    'width': 30,
-    'depth': 10,
-    'weight': 3000
+CHARACTERISTICS_PFF2_MASK = {
+    'height': 10,
+    'width': 10,
+    'depth': 0.01,
+    'weight': 50
 }
-CHARACTERISTICS_FRIDGE = {
-    'height': 200,
-    'width': 100,
-    'depth': 50,
-    'weight': 40000
+CHARACTERISTICS_VACCUM_CLEANER = {
+    'height': 40,
+    'width': 30,
+    'depth': 30,
+    'weight': 5000
 }
 CHEAP_FEE = {
     'height': 10,
@@ -31,15 +31,15 @@ CHEAP_FEE = {
 @pytest.fixture
 def three_products():
     return [
-        Product('camera', 750, CHARACTERISTICS_CAMERA),
-        Product('guitar', 2000, CHARACTERISTICS_GUITAR),
-        Product('fridge', 3000, CHARACTERISTICS_FRIDGE)
+        Product('1', 'book', 750, CHARACTERISTICS_BOOK),
+        Product('2', 'pff2_mask', 2000, CHARACTERISTICS_PFF2_MASK),
+        Product('3', 'vaccum_cleaner', 3000, CHARACTERISTICS_VACCUM_CLEANER)
     ]
 
 one_product = (
-    (Product('camera', 750, CHARACTERISTICS_CAMERA), 10),
-    (Product('guitar', 2000, CHARACTERISTICS_GUITAR), 30),
-    (Product('fridge', 3000, CHARACTERISTICS_FRIDGE), 400)
+    (Product('1', 'book', 750, CHARACTERISTICS_BOOK), 10),
+    (Product('2', 'pff2_mask', 2000, CHARACTERISTICS_PFF2_MASK), 10),
+    (Product('3', 'vaccum_cleaner', 3000, CHARACTERISTICS_VACCUM_CLEANER), 50)
 )
 
 @pytest.mark.parametrize(

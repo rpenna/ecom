@@ -10,7 +10,7 @@ def product_for_testing():
         'depth': 10,
         'weight': 1000
     }
-    return Product('testing_product', 1, info)
+    return Product('0', 'testing_product', 1, info)
 
 def test_should_calculate_volume_correctly(product_for_testing):
     assert product_for_testing.get_volume() == 0.003
