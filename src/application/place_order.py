@@ -1,14 +1,14 @@
 from datetime import datetime, timedelta
 
-from .coupon import Coupon
-from .order import Order
-from .product import Product
 from .place_order_input import PlaceOrderInput
 from .place_order_output import PlaceOrderOutput
-from .shipping_calculator import ShippingCalculator
-from .zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
-from .product_not_found import ProductNotFound
-from.coupon_not_found import CouponNotFound
+from ..domain.entity.coupon import Coupon
+from ..domain.entity.order import Order
+from ..domain.entity.product import Product
+from ..domain.service.shipping_calculator import ShippingCalculator
+from ..domain.exception.product_not_found import ProductNotFound
+from ..domain.exception.coupon_not_found import CouponNotFound
+from ..infra.gateway.memory.zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
 
 BOOK = Product('1', 'book', 19.9, {
     'height': 15,

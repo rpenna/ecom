@@ -1,4 +1,4 @@
-from .zipcode_distance_calculator_api import ZipcodeDistanceCalculatorApi
+from ....domain.gateway.zipcode_distance_calculator_api import ZipcodeDistanceCalculatorApi
 
 class ZipcodeDistanceCalculatorApiMemory(ZipcodeDistanceCalculatorApi):
     @staticmethod

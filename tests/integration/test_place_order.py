@@ -2,9 +2,9 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, timedelta
 
-from ..src.place_order import PlaceOrder
-from ..src.place_order_input import PlaceOrderInput
-from ..src.place_order_output import PlaceOrderOutput
+from ...src.application.place_order import PlaceOrder
+from ...src.application.place_order_input import PlaceOrderInput
+from ...src.application.place_order_output import PlaceOrderOutput
 
 def test_should_place_order_containing_three_products():
     products = [

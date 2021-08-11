@@ -1,6 +1,6 @@
 import pytest
 
-from ..src.product import Product
+from ...src.domain.entity.product import Product
 
 @pytest.fixture
 def product_for_testing():

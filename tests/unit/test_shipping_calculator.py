@@ -1,7 +1,7 @@
 import pytest
 
-from ..src.shipping_calculator import ShippingCalculator
-from ..src.product import Product
+from ...src.domain.service.shipping_calculator import ShippingCalculator
+from ...src.domain.entity.product import Product
 
 CHARACTERISTICS_BOOK = {
     'height': 15,

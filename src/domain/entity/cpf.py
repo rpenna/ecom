@@ -1,5 +1,5 @@
 import re
-from .invalid_cpf import InvalidCpf
+from ..exception.invalid_cpf import InvalidCpf
 
 CPF_LENGTH = 11
 

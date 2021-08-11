@@ -1,6 +1,6 @@
 import pytest
-from ..src.cpf import Cpf
-from ..src.invalid_cpf import InvalidCpf
+from ...src.domain.entity.cpf import Cpf
+from ...src.domain.exception.invalid_cpf import InvalidCpf
 
 valid_cpf = (
     '30291840051',

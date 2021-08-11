@@ -1,4 +1,4 @@
-from .product import Product
+from ..entity.product import Product
 
 MINIMUM_FEE = 10
 

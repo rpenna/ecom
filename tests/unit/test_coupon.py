@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta
 
-from ..src.coupon import Coupon
+from ...src.domain.entity.coupon import Coupon
 
 def test_expired_coupon_should_be_expired():
     expired_date = datetime.now() - timedelta(days=1)

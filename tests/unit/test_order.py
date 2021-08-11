@@ -2,9 +2,9 @@ import pytest
 from decimal import Decimal
 from datetime import datetime, timedelta
 
-from ..src.order import Order
-from ..src.coupon import Coupon
-from ..src.invalid_cpf import InvalidCpf
+from ...src.domain.entity.order import Order
+from ...src.domain.entity.coupon import Coupon
+from ...src.domain.exception.invalid_cpf import InvalidCpf
 
 @pytest.fixture
 def order():
