@@ -5,6 +5,7 @@ from .place_order_output import PlaceOrderOutput
 from ..domain.entity.coupon import Coupon
 from ..domain.entity.order import Order
 from ..domain.entity.product import Product
+from ..domain.repository.product_repository import ProductRepository
 from ..domain.service.shipping_calculator import ShippingCalculator
 from ..domain.exception.product_not_found import ProductNotFound
 from ..domain.exception.coupon_not_found import CouponNotFound
@@ -39,37 +40,16 @@ VALID_COUPON10 = Coupon('10OFF', 15, NOT_EXPIRED_DATE)
 INVALID_COUPON10 = Coupon('10OFFINVALID', 15, EXPIRED_DATE)
 
 class PlaceOrder:
-    def __init__(self):
+    def __init__(self, product_repository: ProductRepository):
         self.__order = None
         self.__zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
-        self.__products = [
-            BOOK,
-            PFF2_MASK,
-            VACUUM_CLEANER
-        ]
+        self.__product_repository = product_repository
         self.__coupons = [
             VALID_COUPON15,
             INVALID_COUPON15,
             VALID_COUPON10,
             INVALID_COUPON10
         ]
-
-    def __get_product_by_id(self, id: str) -> Product:
-        """Search for product using its ID
-
-        Args:
-            id (str): product's id
-
-        Raises:
-            ProductNotFound: when product was not found
-
-        Returns:
-            Product: Product found
-        """
-        for product in self.__products:
-            if product.id == id:
-                return product
-        raise ProductNotFound
 
     def __get_coupon_by_code(self, code: str) -> Coupon:
         """Search for coupon by code
@@ -129,7 +109,8 @@ class PlaceOrder:
         self.__order = Order(input.cpf)
         distance = self.__zipcode_calculator.calculate(input.zipcode)
         for product in input.products:
-            available_product = self.__get_product_by_id(product.get('id'))
+            id = product.get('id')
+            available_product = self.__product_repository.get_by_id(id)
             quantity = product.get('quantity')
             self.__add_product_to_cart(available_product, quantity)
             self.__order.shipping_fee += ShippingCalculator.calculate(distance, available_product) * quantity
