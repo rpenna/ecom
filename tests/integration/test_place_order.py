@@ -6,6 +6,7 @@ from ...src.application.place_order import PlaceOrder
 from ...src.application.place_order_input import PlaceOrderInput
 from ...src.application.place_order_output import PlaceOrderOutput
 from ...src.infra.repository.memory.product_repository_memory import ProductRepositoryMemory
+from ...src.infra.repository.memory.coupon_repository_memory import CouponRepositoryMemory
 
 def test_should_place_order_containing_three_products():
     products = [
@@ -27,7 +28,8 @@ def test_should_place_order_containing_three_products():
     zipcode = '1234567'
     input = PlaceOrderInput(cpf, products, zipcode, coupon)
     product_repository = ProductRepositoryMemory()
-    place_order = PlaceOrder(product_repository)
+    coupon_repository = CouponRepositoryMemory()
+    place_order = PlaceOrder(product_repository, coupon_repository)
     output = place_order.execute(input)
     assert output.total == Decimal('349.77')
     assert output.shipping_fee == Decimal('400')
