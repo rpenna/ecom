@@ -16,21 +16,37 @@ class PlaceOrder:
         self.__product_repository = product_repository
         self.__coupon_repository = coupon_repository
 
-    def __add_product_to_cart(self, product: Product, quantity: int) -> None:
+    def __add_product_to_cart(self, id: str, quantity: int) -> Product:
         """Add products to the cart
 
         Args:
-            products (Product): product available to be ordered
+            id (str): product's ID
             quantity (int): quantity of products to be ordered
 
         Returns:
-            None: no return expected
+            Product: product added to cart
         """
+        available_product = self.__product_repository.get_by_id(id)
         self.__order.add_to_cart(
-            product.id,
-            product.price,
+            id,
+            available_product.price,
             quantity
         )
+        return available_product
+
+    def __apply_shipping_cost(self, distance: float, product: Product, quantity: int) -> None:
+        """Add product's shipping fee to the order cost
+
+        Args:
+            distance (float): distance from the storage to the destination
+            product (Product): Product to be shipped
+            quantity (int): quantity of products
+
+        Returns:
+            None: No return expected
+        """
+        product_shipping_fee = ShippingCalculator.calculate(distance, product)
+        self.__order.shipping_fee += product_shipping_fee * quantity
 
     def __apply_discount(self, code: str) -> None:
         """Apply the discount informed by the coupon code
@@ -60,11 +76,15 @@ class PlaceOrder:
         self.__order = Order(input.cpf)
         distance = self.__zipcode_calculator.calculate(input.zipcode)
         for product in input.products:
-            id = product.get('id')
-            available_product = self.__product_repository.get_by_id(id)
-            quantity = product.get('quantity')
-            self.__add_product_to_cart(available_product, quantity)
-            self.__order.shipping_fee += ShippingCalculator.calculate(distance, available_product) * quantity
+            added_product = self.__add_product_to_cart(
+                product.get('id'),
+                product.get('quantity')
+            )
+            self.__apply_shipping_cost(
+                distance,
+                added_product,
+                product.get('quantity')
+            )
         if input.coupon is not None:
             self.__apply_discount(input.coupon)
         return PlaceOrderOutput(self.__order.get_total(), self.__order.shipping_fee)
