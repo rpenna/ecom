@@ -76,6 +76,7 @@ class PlaceOrder:
             PlaceOrderOutput: Created order output
         """
         self.__order = Order(input.cpf)
+        self.__order.id = self.__order_repository.create(self.__order)
         distance = self.__zipcode_calculator.calculate(input.zipcode)
         for product in input.products:
             added_product = self.__add_product_to_cart(
@@ -89,5 +90,8 @@ class PlaceOrder:
             )
         if input.coupon is not None:
             self.__apply_discount(input.coupon)
-        self.__order_repository.create(self.__order)
-        return PlaceOrderOutput(self.__order.get_total(), self.__order.shipping_fee)
+        self.__order_repository.save(self.__order)
+        return PlaceOrderOutput(
+            self.__order.get_total(),
+            self.__order.shipping_fee
+        )

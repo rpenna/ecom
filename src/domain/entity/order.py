@@ -8,6 +8,7 @@ class Order:
     def __init__(self, cpf: str):
         self.__cpf = Cpf(cpf)
         self.__cart = []
+        self.__id = None
         self.__coupon = None
         self.__shipping_fee = 0
 
@@ -22,6 +23,14 @@ class Order:
     @shipping_fee.setter
     def shipping_fee(self, value: float) -> None:
         self.__shipping_fee = value
+
+    @property
+    def id(self):
+        return self.__id
+
+    @id.setter
+    def id(self, new_id: str):
+        self.__id = new_id
 
     def __to_money(self, value: float) -> Decimal:
         """Receives a floating value and returns it rounded by 2, representing
