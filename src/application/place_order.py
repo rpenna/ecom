@@ -4,17 +4,19 @@ from ..domain.entity.order import Order
 from ..domain.entity.product import Product
 from ..domain.repository.product_repository import ProductRepository
 from ..domain.repository.coupon_repository import CouponRepository
+from ..domain.repository.order_repository import OrderRepository
 from ..domain.service.shipping_calculator import ShippingCalculator
 from ..domain.exception.product_not_found import ProductNotFound
 from ..domain.exception.coupon_not_found import CouponNotFound
 from ..infra.gateway.memory.zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
 
 class PlaceOrder:
-    def __init__(self, product_repository: ProductRepository, coupon_repository: CouponRepository):
+    def __init__(self, product_repository: ProductRepository, coupon_repository: CouponRepository, order_repository: OrderRepository):
         self.__order = None
         self.__zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
         self.__product_repository = product_repository
         self.__coupon_repository = coupon_repository
+        self.__order_repository = order_repository
 
     def __add_product_to_cart(self, id: str, quantity: int) -> Product:
         """Add products to the cart
@@ -64,14 +66,14 @@ class PlaceOrder:
             pass
 
     def execute(self, input: PlaceOrderInput) -> PlaceOrderOutput:
-        """Place order according to the DTO received
+        """Place order according to the DTO received, saving the order created
+        to the database.
 
         Args:
             input (PlaceOrderInput): DTO of the order
 
         Returns:
-            PlaceOrderOutput: Same content as DTO, but including the 'total'
-            key, which informs the total amount of the order.
+            PlaceOrderOutput: Created order output
         """
         self.__order = Order(input.cpf)
         distance = self.__zipcode_calculator.calculate(input.zipcode)
@@ -87,4 +89,5 @@ class PlaceOrder:
             )
         if input.coupon is not None:
             self.__apply_discount(input.coupon)
+        self.__order_repository.create(self.__order)
         return PlaceOrderOutput(self.__order.get_total(), self.__order.shipping_fee)
