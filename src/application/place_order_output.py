@@ -1,12 +1,13 @@
+from ..domain.entity.order import Order
+
 class PlaceOrderOutput:
-    def __init__(self, total: float, shipping_fee: float):
-        self.__total = total
-        self.__shipping_fee = shipping_fee
+    def __init__(self, order: Order):
+        self.__order = order
 
     @property
-    def total(self):
-        return self.__total
+    def total_price(self):
+        return self.__order.get_total_price()
 
     @property
     def shipping_fee(self):
-        return self.__shipping_fee
+        return self.__order.shipping_fee

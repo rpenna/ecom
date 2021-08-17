@@ -11,6 +11,8 @@ class Order:
         self.__id = None
         self.__coupon = None
         self.__shipping_fee = 0
+        self.__discount = 0
+        self.__total = 0
 
     @property
     def cpf(self):
@@ -31,6 +33,14 @@ class Order:
     @id.setter
     def id(self, new_id: str):
         self.__id = new_id
+
+    @property
+    def discount(self):
+        return self.__discount
+
+    @property
+    def total(self):
+        return self.__total
 
     def __to_money(self, value: float) -> Decimal:
         """Receives a floating value and returns it rounded by 2, representing
@@ -73,28 +83,25 @@ class Order:
         if not coupon.is_expired():
             self.__coupon = coupon
 
-    def __apply_discount(self, amount: float) -> float:
+    def __apply_discount(self) -> float:
         """Applies discount related to the coupon
-
-        Args:
-            amount (float): value to be discounted
 
         Returns:
             float: discounted value
         """
         if self.__coupon is None:
-            return amount
-        percentage = self.__coupon.discount_percentage/100
-        return amount * (1 - percentage)
+            return 0
+        discount = self.__coupon.discount_percentage/100
+        return self.__total * discount
 
-    def get_total(self):
+    def get_total_price(self):
         """Calculate the current total price of the order
 
         Returns:
             float: total price
         """
-        total = 0
+        self.__total = 0
         for product in self.__cart:
-            total += product.get_total()
-        total = self.__apply_discount(total)
-        return self.__to_money(total)
+            self.__total += product.get_total()
+        self.__discount = self.__apply_discount()
+        return self.__to_money(self.__total - self.__discount)

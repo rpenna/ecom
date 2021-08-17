@@ -33,5 +33,5 @@ def test_should_place_order_containing_three_products():
     order_repository = OrderRepositoryMemory()
     place_order = PlaceOrder(product_repository, coupon_repository, order_repository)
     output = place_order.execute(input)
-    assert output.total == Decimal('349.77')
+    assert output.total_price == Decimal('349.77')
     assert output.shipping_fee == Decimal('400')

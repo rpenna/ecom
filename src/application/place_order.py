@@ -91,7 +91,4 @@ class PlaceOrder:
         if input.coupon is not None:
             self.__apply_discount(input.coupon)
         self.__order_repository.save(self.__order)
-        return PlaceOrderOutput(
-            self.__order.get_total(),
-            self.__order.shipping_fee
-        )
+        return PlaceOrderOutput(self.__order)
