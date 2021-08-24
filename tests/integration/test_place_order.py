@@ -27,11 +27,16 @@ def test_should_place_order_containing_three_products():
     coupon = '15OFF'
     cpf = '01234567890'
     zipcode = '1234567'
-    input = PlaceOrderInput(cpf, products, zipcode, coupon)
+    issue_date = datetime(2021, 8, 24)
+    input = PlaceOrderInput(cpf, issue_date, products, zipcode, coupon)
     product_repository = ProductRepositoryMemory()
     coupon_repository = CouponRepositoryMemory()
     order_repository = OrderRepositoryMemory()
-    place_order = PlaceOrder(product_repository, coupon_repository, order_repository)
+    place_order = PlaceOrder(
+        product_repository,
+        coupon_repository,
+        order_repository
+    )
     output = place_order.execute(input)
     assert output.total_price == Decimal('349.77')
     assert output.shipping_fee == Decimal('400')
