@@ -1,12 +1,15 @@
+from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
 
 from .coupon import Coupon
+from .order_code import OrderCode
 from .order_product import OrderProduct
 from .cpf import Cpf
 
 class Order:
-    def __init__(self, cpf: str):
+    def __init__(self, cpf: str, issue_date: datetime, year_count: int):
         self.__cpf = Cpf(cpf)
+        self.__order_code = OrderCode(issue_date, year_count)
         self.__cart = []
         self.__id = None
         self.__coupon = None
@@ -27,12 +30,8 @@ class Order:
         self.__shipping_fee = value
 
     @property
-    def id(self):
-        return self.__id
-
-    @id.setter
-    def id(self, new_id: str):
-        self.__id = new_id
+    def code(self):
+        return self.__order_code.value
 
     @property
     def discount(self):

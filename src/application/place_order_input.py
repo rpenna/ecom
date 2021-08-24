@@ -1,6 +1,9 @@
+from datetime import datetime
+
 class PlaceOrderInput:
-    def __init__(self, cpf: str, products: list, zipcode: str, coupon: str = None):
+    def __init__(self, cpf: str, issue_date: datetime, products: list, zipcode: str, coupon: str = None):
         self.__cpf = cpf
+        self.__issue_date = issue_date
         self.__products = products
         self.__zipcode = zipcode
         self.__coupon = coupon
@@ -8,6 +11,10 @@ class PlaceOrderInput:
     @property
     def cpf(self):
         return self.__cpf
+
+    @property
+    def issue_date(self):
+        return self.__issue_date
 
     @property
     def products(self):

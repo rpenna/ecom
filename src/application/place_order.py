@@ -75,8 +75,8 @@ class PlaceOrder:
         Returns:
             PlaceOrderOutput: Created order output
         """
-        self.__order = Order(input.cpf)
-        self.__order.id = self.__order_repository.create(self.__order)
+        year_count = self.__order_repository.count_by_year(input.issue_date)
+        self.__order = Order(input.cpf, input.issue_date, year_count)
         distance = self.__zipcode_calculator.calculate(input.zipcode)
         for product in input.products:
             added_product = self.__add_product_to_cart(

@@ -1,9 +1,13 @@
 import abc
+from datetime import datetime
 from ..entity.order import Order
 
 class OrderRepository(metaclass=abc.ABCMeta):
-    def create(self) -> str:
+    def count_by_year(self, issue_date: datetime) -> str:
         """Create new order in database
+
+        Args:
+            issue_date (datetime): order's issue date
 
         Returns:
             str: ID code of the order created
