@@ -11,3 +11,7 @@ class PlaceOrderOutput:
     @property
     def shipping_fee(self):
         return self.__order.shipping_fee
+
+    @property
+    def code(self):
+        return self.__order.code

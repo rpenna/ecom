@@ -24,3 +24,17 @@ class OrderRepository(metaclass=abc.ABCMeta):
             bool: True if order was saved
         """
         raise NotImplementedError
+
+    def get_by_code(self, code: str) -> Order:
+        """Search for order by its code
+
+        Args:
+            code (str): code to be searched
+
+        Raises:
+            OrderNotFound: when order was not found
+
+        Returns:
+            Order: order found
+        """
+        raise NotImplementedError

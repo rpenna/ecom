@@ -1,6 +1,7 @@
 from datetime import datetime
 from ....domain.entity.order import Order
 from ....domain.repository.order_repository import OrderRepository
+from ....domain.exception.order_not_found import OrderNotFound
 
 class OrderRepositoryMemory(OrderRepository):
     def __init__(self):
@@ -22,19 +23,28 @@ class OrderRepositoryMemory(OrderRepository):
                 counter += 1
         return counter
         
-    def save(self, saved_order: Order) -> bool:
+    def save(self, new_order: Order) -> None:
         """Save order in database
 
         Args:
-            saved_order (Order): order to be saved on database
+            new_order (Order): order to be saved on database
+        """
+        self.__orders.append(new_order)
+
+    def get_by_code(self, code: str) -> Order:
+        """Search for order by its code
+
+        Args:
+            code (str): code to be searched
+
+        Raises:
+            OrderNotFound: when order was not found
 
         Returns:
-            bool: True if order was saved
+            Order: order found
         """
-        i = 0
+        print(self.__orders)
         for order in self.__orders:
-            if order.id == saved_order.id:
-                self.__orders[i] = saved_order
-                return True
-            i += 1
-        return False
+            if order.code == code:
+                return order
+        raise OrderNotFound
