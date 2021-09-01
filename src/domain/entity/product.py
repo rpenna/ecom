@@ -12,6 +12,10 @@ class Product:
         return self.__id
 
     @property
+    def description(self):
+        return self.__description
+
+    @property
     def price(self):
         return self.__price
 

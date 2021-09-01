@@ -43,7 +43,6 @@ class OrderRepositoryMemory(OrderRepository):
         Returns:
             Order: order found
         """
-        print(self.__orders)
         for order in self.__orders:
             if order.code == code:
                 return order

@@ -9,6 +9,7 @@ from .cpf import Cpf
 class Order:
     def __init__(self, cpf: str, issue_date: datetime, year_count: int):
         self.__cpf = Cpf(cpf)
+        self.__issue_date = issue_date
         self.__order_code = OrderCode(issue_date, year_count)
         self.__cart = []
         self.__id = None
@@ -36,6 +37,14 @@ class Order:
     @property
     def discount(self):
         return self.__discount
+
+    @property
+    def cart(self):
+        return self.__cart
+
+    @property
+    def issue_date(self):
+        return self.__issue_date
 
     @property
     def total(self):
