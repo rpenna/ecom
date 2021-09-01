@@ -5,7 +5,6 @@ from datetime import datetime
 from ...src.application.place_order import PlaceOrder
 from ...src.application.place_order_input import PlaceOrderInput
 from ...src.application.get_order import GetOrder
-from ...src.application.get_order_output import GetOrderOutput
 from ...src.infra.repository.memory.product_repository_memory import ProductRepositoryMemory
 from ...src.infra.repository.memory.coupon_repository_memory import CouponRepositoryMemory
 from ...src.infra.repository.memory.order_repository_memory import OrderRepositoryMemory
@@ -39,7 +38,7 @@ def test_should_place_order_containing_three_products():
         order_repository
     )
     output = place_order.execute(input)
-    get_order = GetOrder(order_repository)
+    get_order = GetOrder(order_repository, product_repository)
     order = get_order.execute('202100000001')
     assert order.code == '202100000001'
     assert order.total_price == Decimal('349.77')
