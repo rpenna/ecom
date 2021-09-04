@@ -1,13 +1,11 @@
 import pytest
 from decimal import Decimal
 from datetime import datetime, timedelta
-
 from ...src.application.place_order import PlaceOrder
 from ...src.application.place_order_input import PlaceOrderInput
 from ...src.application.place_order_output import PlaceOrderOutput
-from ...src.infra.repository.memory.product_repository_memory import ProductRepositoryMemory
-from ...src.infra.repository.memory.coupon_repository_memory import CouponRepositoryMemory
-from ...src.infra.repository.memory.order_repository_memory import OrderRepositoryMemory
+from ...src.infra.factory.memory_repository_factory import MemoryRepositoryFactory
+from ...src.infra.gateway.memory.zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
 
 def test_should_place_order_containing_three_products():
     products = [
@@ -29,13 +27,11 @@ def test_should_place_order_containing_three_products():
     zipcode = '1234567'
     issue_date = datetime(2021, 8, 24)
     input = PlaceOrderInput(cpf, issue_date, products, zipcode, coupon)
-    product_repository = ProductRepositoryMemory()
-    coupon_repository = CouponRepositoryMemory()
-    order_repository = OrderRepositoryMemory()
+    memory_repository_factory = MemoryRepositoryFactory()
+    zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
     place_order = PlaceOrder(
-        product_repository,
-        coupon_repository,
-        order_repository
+        memory_repository_factory,
+        zipcode_calculator
     )
     output = place_order.execute(input)
     assert output.total_price == Decimal('349.77')
