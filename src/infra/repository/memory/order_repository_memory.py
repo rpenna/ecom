@@ -4,8 +4,18 @@ from ....domain.repository.order_repository import OrderRepository
 from ....domain.exception.order_not_found import OrderNotFound
 
 class OrderRepositoryMemory(OrderRepository):
-    def __init__(self):
-        self.__orders = []
+    _instance = None
+    __orders = []
+
+    def __new__(cls):
+        """Singleton design pattern implementation alternative in python
+
+        Returns:
+            OrderRepositoryMemroy: An OrderRepositoryMemory instance
+        """
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
 
     def count_by_year(self, issue_date: datetime) -> str:
         """Create new order in database

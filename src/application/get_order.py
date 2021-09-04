@@ -1,13 +1,11 @@
 from .get_order_output import GetOrderOutput
 from ..domain.entity.order import Order
-from ..domain.repository.product_repository import ProductRepository
-from ..domain.repository.order_repository import OrderRepository
-from ..domain.exception.order_not_found import OrderNotFound
+from ..domain.factory.repository_abstract_factory import RepositoryAbstractFactory
 
 class GetOrder:
-    def __init__(self, order_repository: OrderRepository, product_repository: ProductRepository):
-        self.__order_repository = order_repository
-        self.__product_repository = product_repository
+    def __init__(self, repository_factory: RepositoryAbstractFactory):
+        self.__order_repository = repository_factory.make_order_repository()
+        self.__product_repository = repository_factory.make_product_repository()
 
     def __get_products(self, order: Order) -> list:
         """Lists order's products data

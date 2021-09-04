@@ -2,21 +2,18 @@ from .place_order_input import PlaceOrderInput
 from .place_order_output import PlaceOrderOutput
 from ..domain.entity.order import Order
 from ..domain.entity.product import Product
-from ..domain.repository.product_repository import ProductRepository
-from ..domain.repository.coupon_repository import CouponRepository
-from ..domain.repository.order_repository import OrderRepository
+from ..domain.factory.repository_abstract_factory import RepositoryAbstractFactory
 from ..domain.service.shipping_calculator import ShippingCalculator
-from ..domain.exception.product_not_found import ProductNotFound
 from ..domain.exception.coupon_not_found import CouponNotFound
-from ..infra.gateway.memory.zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
+from ..domain.gateway.zipcode_distance_calculator_api import ZipcodeDistanceCalculatorApi
 
 class PlaceOrder:
-    def __init__(self, product_repository: ProductRepository, coupon_repository: CouponRepository, order_repository: OrderRepository):
+    def __init__(self, repository_factory: RepositoryAbstractFactory, zipcode_calculator: ZipcodeDistanceCalculatorApi):
         self.__order = None
-        self.__zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
-        self.__product_repository = product_repository
-        self.__coupon_repository = coupon_repository
-        self.__order_repository = order_repository
+        self.__zipcode_calculator = zipcode_calculator
+        self.__product_repository = repository_factory.make_product_repository()
+        self.__coupon_repository = repository_factory.make_coupon_repository()
+        self.__order_repository = repository_factory.make_order_repository()
 
     def __add_product_to_cart(self, id: str, quantity: int) -> Product:
         """Add products to the cart
