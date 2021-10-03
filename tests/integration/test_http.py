@@ -33,6 +33,13 @@ def test_should_not_find_inexistent_order():
     get_order_response = requests.get(get_order_url)
     assert get_order_response.status_code == 422
 
+def test_should_set_order_via_http(order_input):
+    place_order_response = requests.post(
+        'http://localhost:3000/order',
+        json=order_input
+    )
+    assert place_order_response.status_code == 201
+
 def test_should_get_order_via_http(order_input):
     place_order_response = requests.post(
         'http://localhost:3000/order',
@@ -42,3 +49,14 @@ def test_should_get_order_via_http(order_input):
     get_order_url = 'http://localhost:3000/order/%s' % order_data['code']
     get_order_response = requests.get(get_order_url)
     assert get_order_response.status_code == 200
+
+def test_should_get_correct_order_code_via_http(order_input):
+    place_order_response = requests.post(
+        'http://localhost:3000/order',
+        json=order_input
+    )
+    order_data = place_order_response.json()
+    get_order_url = 'http://localhost:3000/order/%s' % order_data['code']
+    get_order_response = requests.get(get_order_url)
+    json_get_order_response = get_order_response.json()
+    assert order_data['code'] == json_get_order_response['code']
