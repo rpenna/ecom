@@ -27,3 +27,17 @@ class PlaceOrderInput:
     @property
     def zipcode(self):
         return self.__zipcode
+
+    def dict(self) -> dict:
+        """Create a dictionary with the object content
+
+        Returns:
+            dict: returned dictionary
+        """
+        return {
+            'cpf': self.__cpf,
+            'issue_date': self.__issue_date,
+            'products': self.__products,
+            'zipcode': self.__zipcode,
+            'coupon': self.__coupon
+        }
