@@ -28,11 +28,13 @@ def order_input():
         'coupon': '15OFF'
     }
 
+@pytest.mark.skip(reason="no reason for testing HTTP requests everytime")
 def test_should_not_find_inexistent_order():
     get_order_url = 'http://localhost:3000/order/123456'
     get_order_response = requests.get(get_order_url)
     assert get_order_response.status_code == 422
 
+@pytest.mark.skip(reason="no reason for testing HTTP requests everytime")
 def test_should_set_order_via_http(order_input):
     place_order_response = requests.post(
         'http://localhost:3000/order',
@@ -40,6 +42,7 @@ def test_should_set_order_via_http(order_input):
     )
     assert place_order_response.status_code == 201
 
+@pytest.mark.skip(reason="no reason for testing HTTP requests everytime")
 def test_should_get_order_via_http(order_input):
     place_order_response = requests.post(
         'http://localhost:3000/order',
@@ -50,6 +53,7 @@ def test_should_get_order_via_http(order_input):
     get_order_response = requests.get(get_order_url)
     assert get_order_response.status_code == 200
 
+@pytest.mark.skip(reason="no reason for testing HTTP requests everytime")
 def test_should_get_correct_order_code_via_http(order_input):
     place_order_response = requests.post(
         'http://localhost:3000/order',
