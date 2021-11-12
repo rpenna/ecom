@@ -26,6 +26,24 @@ class Monetary:
     def __repr__(self) -> str:
         return str(self.__value)
 
+    def __mul__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            return Monetary(self.__value * other)
+        raise TypeError
+
+    def __add__(self, other):
+        if isinstance(other, int) or isinstance(other, float):
+            return Monetary(self.__value * other)
+        if hasattr(other, 'value'):
+            return Monetary(self.__value + other.value)
+        raise TypeError
+
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
+
     @property
     def value(self):
         return self.__value

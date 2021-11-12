@@ -1,4 +1,5 @@
 from ..entity.product import Product
+from ..entity.monetary import Monetary
 
 MINIMUM_FEE = 10
 
@@ -18,4 +19,6 @@ class ShippingCalculator:
         volume = product.get_volume()
         density = product.get_density()
         total_fee += distance * volume * (density/100)
-        return total_fee if total_fee > MINIMUM_FEE else MINIMUM_FEE
+        if total_fee > MINIMUM_FEE:
+            return Monetary(total_fee)
+        return Monetary(MINIMUM_FEE)

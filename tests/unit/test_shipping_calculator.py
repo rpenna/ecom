@@ -2,6 +2,7 @@ import pytest
 
 from ...src.domain.service.shipping_calculator import ShippingCalculator
 from ...src.domain.entity.product import Product
+from ...src.domain.entity.monetary import Monetary
 
 CHARACTERISTICS_BOOK = {
     'height': 15,
@@ -37,9 +38,9 @@ def three_products():
     ]
 
 one_product = (
-    (Product('1', 'book', 750, CHARACTERISTICS_BOOK), 10),
-    (Product('2', 'pff2_mask', 2000, CHARACTERISTICS_PFF2_MASK), 10),
-    (Product('3', 'vaccum_cleaner', 3000, CHARACTERISTICS_VACCUM_CLEANER), 50)
+    (Product('1', 'book', 750, CHARACTERISTICS_BOOK), Monetary(10)),
+    (Product('2', 'pff2_mask', 2000, CHARACTERISTICS_PFF2_MASK), Monetary(10)),
+    (Product('3', 'vaccum_cleaner', 3000, CHARACTERISTICS_VACCUM_CLEANER), Monetary(50))
 )
 
 @pytest.mark.parametrize(
