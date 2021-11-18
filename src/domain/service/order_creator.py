@@ -1,3 +1,4 @@
+from ..factory.tax_calculator_factory import TaxCalculatorFactory
 from ..factory.repository_abstract_factory import RepositoryAbstractFactory
 from ..gateway.zipcode_distance_calculator_api import ZipcodeDistanceCalculatorApi
 from ..entity.order import Order
@@ -12,6 +13,7 @@ class OrderCreator:
         self.__product_repository = repository_factory.make_product_repository()
         self.__coupon_repository = repository_factory.make_coupon_repository()
         self.__order_repository = repository_factory.make_order_repository()
+        self.__taxes_repository = repository_factory.make_taxes_repository()
 
     def __add_product_to_cart(self, id: str, quantity: int) -> Product:
         """Add products to the cart
@@ -60,6 +62,15 @@ class OrderCreator:
         except CouponNotFound:
             pass
 
+    def __calculate_tax(self) -> None:
+        issue_date = self.__order.issue_date
+        tax_table = self.__taxes_repository
+        tax_calculator = TaxCalculatorFactory().make(issue_date, tax_table)
+        taxes = 0
+        for product in self.__order.cart:
+            taxes += tax_calculator.calculate(product)
+        self.__order.tax = taxes
+
     def create(self, order_data: dict) -> Order:
         """Create new order
 
@@ -90,5 +101,6 @@ class OrderCreator:
             )
         if order_data['coupon'] is not None:
             self.__apply_discount(order_data['coupon'])
+        self.__calculate_tax()
         self.__order_repository.save(self.__order)
         return self.__order

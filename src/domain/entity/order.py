@@ -1,5 +1,4 @@
 from datetime import datetime
-from decimal import Decimal, ROUND_HALF_UP
 
 from .coupon import Coupon
 from .order_code import OrderCode
@@ -30,6 +29,14 @@ class Order:
     @shipping_fee.setter
     def shipping_fee(self, value: float) -> None:
         self.__shipping_fee = value
+
+    @property
+    def tax(self) -> float:
+        return self.__tax
+
+    @tax.setter
+    def tax(self, value: float) -> None:
+        self.__tax = value
 
     @property
     def code(self):

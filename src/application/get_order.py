@@ -44,6 +44,7 @@ class GetOrder:
             'issue_date': order.issue_date,
             'code': order.code,
             'products': products,
+            'tax': order.tax,
             'total_price': order.get_total_price()
         }
         return GetOrderOutput(order_data)

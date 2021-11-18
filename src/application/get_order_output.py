@@ -17,3 +17,7 @@ class GetOrderOutput:
     @property
     def products(self):
         return self.__order.get('products')
+    
+    @property
+    def tax(self):
+        return self.__order.get('tax')
