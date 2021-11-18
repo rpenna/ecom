@@ -6,22 +6,40 @@ class Monetary:
         self.__value = self.__transform(float(value))
 
     def __eq__(self, other) -> bool:
-        return self.__value == other.value
+        try:
+            return self.__value == other.value
+        except AttributeError:
+            return False
 
     def __ne__(self, other) -> bool:
-        return self.__value != other.value
+        try:
+            return self.__value != other.value
+        except AttributeError:
+            return False
 
     def __lt__(self, other) -> bool:
-        return self.__value < other.value
+        try:
+            return self.__value < other.value
+        except AttributeError:
+            return False
 
     def __le__(self, other) -> bool:
-        return self.__value <= other.value
+        try:
+            return self.__value <= other.value
+        except AttributeError:
+            return False
 
     def __gt__(self, other) -> bool:
-        return self.__value > other.value
+        try:
+            return self.__value > other.value
+        except AttributeError:
+            return False
 
     def __ge__(self, other) -> bool:
-        return self.__value >= other.value
+        try:
+            return self.__value >= other.value
+        except AttributeError:
+            return False
 
     def __repr__(self) -> str:
         return str(self.__value)
