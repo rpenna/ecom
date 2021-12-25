@@ -12,7 +12,11 @@ class StockOperation:
         self.__id = id
         self.__out = out
         self.__quantity = quantity
-        self.__operation_date = operation_date
+        self.__date = operation_date
+
+    @property
+    def id(self):
+        return self.__id
 
     @property
     def out(self):
@@ -22,3 +26,6 @@ class StockOperation:
     def quantity(self):
         return self.__quantity
 
+    @property
+    def date(self):
+        return self.__date
