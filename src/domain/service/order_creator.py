@@ -81,13 +81,28 @@ class OrderCreator:
             taxes += tax_calculator.calculate(product)
         self.__order.tax = taxes
 
-    def __execute_stock_operations(self) -> None:
+    def __check_stock_availability(self) -> None:
+        """Check if all products ordered are available in stock
+
+        Raises:
+            OutOfStock: When a product is out of stock
+
+        Returns:
+            None: no return expected
+        """
         stock_calculator = StockCalculator()
         for product in self.__order.cart:
             stock_operations = self.__stock_repository.get_by_id(product.id)
             stock_quantity = stock_calculator.calculate(stock_operations)
             if stock_quantity < product.quantity:
                 raise OutOfStock
+
+    def __execute_stock_operations(self) -> None:
+        """Execute all stock operations for the ordered products
+
+        Returns:
+            None: no return expected
+        """
         stock_operation_date = datetime.now()
         for product in self.__order.cart:
             new_stock_operation = StockOperation(
@@ -127,6 +142,7 @@ class OrderCreator:
                 added_product,
                 product.get('quantity')
             )
+        self.__check_stock_availability()
         if order_data['coupon'] is not None:
             self.__apply_discount(order_data['coupon'])
         self.__calculate_tax()
