@@ -2,8 +2,8 @@ import pytest
 from datetime import datetime
 from ...src.domain.entity.monetary import Monetary
 from ...src.domain.exception.out_of_stock import OutOfStock
-from ...src.application.place_order import PlaceOrder
-from ...src.application.place_order_input import PlaceOrderInput
+from ...src.application.place_order.place_order import PlaceOrder
+from ...src.application.place_order.place_order_input import PlaceOrderInput
 from ...src.infra.factory.memory_repository_factory import MemoryRepositoryFactory
 from ...src.infra.gateway.memory.zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
 

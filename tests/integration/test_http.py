@@ -1,10 +1,7 @@
 import pytest
 import requests
-from datetime import datetime
 from ...src.infra.factory.memory_repository_factory import MemoryRepositoryFactory
 from ...src.infra.gateway.memory.zipcode_distance_calculator_api_memory import ZipcodeDistanceCalculatorApiMemory
-from ...src.application.place_order import PlaceOrder
-from ...src.application.place_order_input import PlaceOrderInput
 
 @pytest.fixture
 def order_input():

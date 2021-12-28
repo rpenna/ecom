@@ -1,4 +1,4 @@
-from ..domain.entity.order import Order
+from ...domain.entity.order import Order
 
 class PlaceOrderOutput:
     def __init__(self, order: Order):

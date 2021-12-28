@@ -1,5 +1,4 @@
 import pytest
-
 from ...src.domain.service.shipping_calculator import ShippingCalculator
 from ...src.domain.entity.product import Product
 from ...src.domain.entity.monetary import Monetary

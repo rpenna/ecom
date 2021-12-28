@@ -1,6 +1,6 @@
 from .get_order_output import GetOrderOutput
-from ..domain.entity.order import Order
-from ..domain.factory.repository_abstract_factory import RepositoryAbstractFactory
+from ...domain.entity.order import Order
+from ...domain.factory.repository_abstract_factory import RepositoryAbstractFactory
 
 class GetOrder:
     def __init__(self, repository_factory: RepositoryAbstractFactory):
