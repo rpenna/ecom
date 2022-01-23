@@ -6,6 +6,7 @@ from .order_product import OrderProduct
 from .cpf import Cpf
 from .monetary import Monetary
 
+
 class Order:
     def __init__(self, cpf: str, issue_date: datetime, year_count: int):
         self.__cpf = Cpf(cpf)
@@ -59,9 +60,9 @@ class Order:
         return self.__total
 
     def add_to_cart(self, id: str, price: float, quantity: int) -> float:
-        """Add new product to the order, returning the total price of the 
+        """Add new product to the order, returning the total price of the
         product
- 
+
         Args:
             id (str): id of the product
             price (float): price of the product
@@ -93,7 +94,7 @@ class Order:
         """
         if self.__coupon is None:
             return 0
-        discount = self.__coupon.discount_percentage/100
+        discount = self.__coupon.discount_percentage / 100
         return self.__total * discount
 
     def get_total_price(self):
