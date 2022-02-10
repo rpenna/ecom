@@ -42,17 +42,11 @@ def place_order_input_november():
 
 
 @pytest.fixture
-def place_order_memory():
+def place_order_memory(autouse=True):
     memory_repository_factory = MemoryRepositoryFactory()
     zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
-    return PlaceOrder(memory_repository_factory, zipcode_calculator)
-
-
-@pytest.fixture
-def place_order_postgresql():
-    memory_repository_factory = PostgresqlRepositoryFactory()
-    zipcode_calculator = ZipcodeDistanceCalculatorApiMemory()
-    return PlaceOrder(memory_repository_factory, zipcode_calculator)
+    place_order_memory = PlaceOrder(memory_repository_factory, zipcode_calculator)
+    yield place_order_memory
 
 
 def test_given_an_order_when_its_placed_then_it_should_return_expected_total_price(
