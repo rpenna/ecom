@@ -19,20 +19,21 @@ from ..repository.postgresql.taxes_repository_postgresql import (
 from ..repository.postgresql.stock_repository_postgresql import (
     StockRepositoryPostgresql,
 )
+from ..database.postgresql_connection import PostgresConnection
 
 
 class PostgresqlRepositoryFactory(RepositoryAbstractFactory):
     def make_order_repository(self) -> OrderRepository:
-        return OrderRepositoryPostgresql()
+        return OrderRepositoryPostgresql(PostgresConnection())
 
     def make_product_repository(self) -> ProductRepository:
-        return ProductRepositoryPostgresql()
+        return ProductRepositoryPostgresql(PostgresConnection())
 
     def make_coupon_repository(self) -> CouponRepository:
-        return CouponRepositoryPostgresql()
+        return CouponRepositoryPostgresql(PostgresConnection())
 
     def make_taxes_repository(self) -> TaxesRepository:
-        return TaxesRepositoryPostgresql()
+        return TaxesRepositoryPostgresql(PostgresConnection())
 
     def make_stock_repository(self) -> StockRepository:
-        return StockRepositoryPostgresql()
+        return StockRepositoryPostgresql(PostgresConnection())
