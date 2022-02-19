@@ -56,6 +56,10 @@ class Order:
         return self.__issue_date
 
     @property
+    def coupon(self):
+        return self.__coupon
+
+    @property
     def total(self):
         return self.__total
 
