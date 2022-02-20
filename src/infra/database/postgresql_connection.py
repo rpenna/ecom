@@ -30,7 +30,7 @@ class PostgresConnection:
         return result
 
     def query_many(self, query: str, parameters: tuple = None):
-        cursor = self.__connect().cursor()
+        cursor = self.__connect().cursor(cursor_factory=self.__dict_cursor)
         cursor.execute(query, parameters)
         result = cursor.fetchmany()
         cursor.close()
