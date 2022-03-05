@@ -1,6 +1,5 @@
 import pytest
 from datetime import datetime
-from ...src.domain.entity.monetary import Monetary
 from ...src.domain.exception.out_of_stock import OutOfStock
 from ...src.application.place_order.place_order import PlaceOrder
 from ...src.application.place_order.place_order_input import PlaceOrderInput
@@ -53,28 +52,28 @@ def test_given_an_order_when_its_placed_then_it_should_return_expected_total_pri
     place_order_memory, place_order_input
 ):
     output = place_order_memory.execute(place_order_input)
-    assert output.total_price == Monetary(349.77)
+    assert output.total_price == "349.77"
 
 
 def test_given_an_order_when_its_placed_then_it_should_return_expected_shipping_fee(
     place_order_memory, place_order_input
 ):
     output = place_order_memory.execute(place_order_input)
-    assert output.shipping_fee == Monetary(400)
+    assert output.shipping_fee == "4.00"
 
 
 def test_given_an_order_made_in_default_month_when_its_placed_then_it_should_return_expected_tax(
     place_order_memory, place_order_input
 ):
     output = place_order_memory.execute(place_order_input)
-    assert output.tax == Monetary(23.87)
+    assert output.tax == "23.87"
 
 
 def test_given_an_order_made_in_default_month_when_its_placed_then_it_should_return_expected_tax(
     place_order_memory, place_order_input_november
 ):
     output = place_order_memory.execute(place_order_input_november)
-    assert output.tax == Monetary(2.3794)
+    assert output.tax == 237
 
 
 def test_given_an_order_with_more_quantity_than_available_in_stock_when_its_placed_then_it_shoul_raise_out_of_stock_exception(
