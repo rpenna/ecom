@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 from ..factory.tax_calculator_factory import TaxCalculatorFactory
 from ..factory.repository_abstract_factory import RepositoryAbstractFactory
@@ -10,8 +11,13 @@ from ..service.stock_calculator import StockCalculator
 from ..exception.coupon_not_found import CouponNotFound
 from ..exception.out_of_stock import OutOfStock
 
+
 class OrderCreator:
-    def __init__(self, repository_factory: RepositoryAbstractFactory, zipcode_calculator: ZipcodeDistanceCalculatorApi):
+    def __init__(
+        self,
+        repository_factory: RepositoryAbstractFactory,
+        zipcode_calculator: ZipcodeDistanceCalculatorApi,
+    ):
         self.__order = None
         self.__zipcode_calculator = zipcode_calculator
         self.__product_repository = repository_factory.make_product_repository()
@@ -31,14 +37,12 @@ class OrderCreator:
             Product: product added to cart
         """
         available_product = self.__product_repository.get_by_id(id)
-        self.__order.add_to_cart(
-            id,
-            available_product.price,
-            quantity
-        )
+        self.__order.add_to_cart(id, available_product.price, quantity)
         return available_product
 
-    def __apply_shipping_cost(self, distance: float, product: Product, quantity: int) -> None:
+    def __apply_shipping_cost(
+        self, distance: float, product: Product, quantity: int
+    ) -> None:
         """Add product's shipping fee to the order cost
 
         Args:
@@ -79,7 +83,7 @@ class OrderCreator:
         taxes = 0
         for product in self.__order.cart:
             taxes += tax_calculator.calculate(product)
-        self.__order.tax = taxes
+        self.__order.tax = math.floor(taxes)
 
     def __check_stock_availability(self) -> None:
         """Check if all products ordered are available in stock
@@ -106,13 +110,9 @@ class OrderCreator:
         stock_operation_date = datetime.now()
         for product in self.__order.cart:
             new_stock_operation = StockOperation(
-                product.id,
-                True,
-                product.quantity,
-                stock_operation_date
+                product.id, True, product.quantity, stock_operation_date
             )
             self.__stock_repository.save(new_stock_operation)
-
 
     def create(self, order_data: dict) -> Order:
         """Create new order
@@ -123,28 +123,17 @@ class OrderCreator:
         Returns:
             Order: order created
         """
-        year_count = self.__order_repository.count_by_year(
-            order_data['issue_date']
-        )
-        self.__order = Order(
-            order_data['cpf'],
-            order_data['issue_date'],
-            year_count
-        )
-        distance = self.__zipcode_calculator.calculate(order_data['zipcode'])
-        for product in order_data['products']:
+        year_count = self.__order_repository.count_by_year(order_data["issue_date"])
+        self.__order = Order(order_data["cpf"], order_data["issue_date"], year_count)
+        distance = self.__zipcode_calculator.calculate(order_data["zipcode"])
+        for product in order_data["products"]:
             added_product = self.__add_product_to_cart(
-                product.get('id'),
-                product.get('quantity')
+                product.get("id"), product.get("quantity")
             )
-            self.__apply_shipping_cost(
-                distance,
-                added_product,
-                product.get('quantity')
-            )
+            self.__apply_shipping_cost(distance, added_product, product.get("quantity"))
         self.__check_stock_availability()
-        if order_data['coupon'] is not None:
-            self.__apply_discount(order_data['coupon'])
+        if order_data["coupon"] is not None:
+            self.__apply_discount(order_data["coupon"])
         self.__calculate_tax()
         self.__execute_stock_operations()
         self.__order_repository.save(self.__order)

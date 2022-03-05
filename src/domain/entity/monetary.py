@@ -1,7 +1,9 @@
 from decimal import Decimal, ROUND_HALF_UP
 
+
 class Monetary:
     """Value Object that represents money"""
+
     def __init__(self, value: float = 0):
         self.__value = self.__transform(float(value))
 
@@ -52,7 +54,7 @@ class Monetary:
     def __add__(self, other):
         if isinstance(other, int) or isinstance(other, float):
             return Monetary(self.__value * other)
-        if hasattr(other, 'value'):
+        if hasattr(other, "value"):
             return Monetary(self.__value + other.value)
         raise TypeError
 
@@ -66,6 +68,9 @@ class Monetary:
     def value(self):
         return self.__value
 
+    def to_decimal(self) -> Decimal:
+        return self.__value
+
     def __transform(self, value: float) -> Decimal:
         """Receives a floating value and returns it rounded by 2, representing
         monetary value
@@ -77,5 +82,5 @@ class Monetary:
             Decimal: monetary value
         """
         amount = Decimal(value)
-        cents = Decimal('.01')
+        cents = Decimal(".01")
         return amount.quantize(cents, ROUND_HALF_UP)

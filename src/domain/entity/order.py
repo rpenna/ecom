@@ -1,10 +1,9 @@
+import math
 from datetime import datetime
-
 from .coupon import Coupon
 from .order_code import OrderCode
 from .order_product import OrderProduct
 from .cpf import Cpf
-from .monetary import Monetary
 
 
 class Order:
@@ -63,7 +62,7 @@ class Order:
     def total(self):
         return self.__total
 
-    def add_to_cart(self, id: str, price: float, quantity: int) -> float:
+    def add_to_cart(self, id: str, price: float, quantity: int) -> None:
         """Add new product to the order, returning the total price of the
         product
 
@@ -74,9 +73,6 @@ class Order:
 
         Raises:
             ProductUnavailable: not enough products availabe on inventory
-
-        Returns:
-            float: total price of the product
         """
         product = OrderProduct(id, price, quantity)
         self.__cart.append(product)
@@ -90,7 +86,7 @@ class Order:
         if not coupon.is_expired():
             self.__coupon = coupon
 
-    def __apply_discount(self) -> float:
+    def __apply_discount(self) -> int:
         """Applies discount related to the coupon
 
         Returns:
@@ -99,9 +95,9 @@ class Order:
         if self.__coupon is None:
             return 0
         discount = self.__coupon.discount_percentage / 100
-        return self.__total * discount
+        return math.floor(self.__total * discount)
 
-    def get_total_price(self):
+    def get_total_price(self) -> int:
         """Calculate the current total price of the order
 
         Returns:
@@ -110,5 +106,4 @@ class Order:
         self.__total = 0
         for product in self.__cart:
             self.__total += product.get_total()
-        self.__discount = self.__apply_discount()
-        return Monetary(self.__total - self.__discount)
+        return self.__total - self.__apply_discount()
