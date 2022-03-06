@@ -16,11 +16,11 @@ class OrderProduct:
     def quantity(self):
         return self.__quantity
 
-    def get_total(self) -> float:
-        """Calculates total price of the product according to its price and 
+    def get_total(self) -> int:
+        """Calculates total price of the product according to its price and
         quantity
 
         Returns:
-            float: Total price
+            int: Total price
         """
         return self.__price * self.__quantity

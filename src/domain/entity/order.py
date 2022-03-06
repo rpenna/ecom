@@ -23,11 +23,11 @@ class Order:
         return self.__cpf.value
 
     @property
-    def shipping_fee(self) -> float:
+    def shipping_fee(self) -> int:
         return self.__shipping_fee
 
     @shipping_fee.setter
-    def shipping_fee(self, value: float) -> None:
+    def shipping_fee(self, value: int) -> None:
         self.__shipping_fee = value
 
     @property

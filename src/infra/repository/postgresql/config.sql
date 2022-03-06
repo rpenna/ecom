@@ -12,13 +12,13 @@ create table if not exists ecom.orders (
     code varchar(12) primary key,
     id serial,
     coupon_code varchar(50) references ecom.coupons (code),
-    shipping_fee decimal(10,2)
+    shipping_fee integer
 );
 
 create table if not exists ecom.products (
     id serial primary key,
     description varchar(100) not null,
-    price decimal(10,2) not null,
+    price integer not null,
     height float not null,
     width float not null,
     depth float not null,
@@ -28,9 +28,9 @@ create table if not exists ecom.products (
 
 create table if not exists ecom.order_product (
     product_id integer references ecom.products (id),
-    order_code varchar(12) references ecom.orders (code),
+    order_code varchar(12) references ecom.orders (code) on delete cascade,
     quantity integer default 0,
-    price decimal(10,2) not null,
+    price integer not null,
     primary key (product_id, order_code)
 );
 
@@ -59,9 +59,9 @@ insert into ecom.products (
     weight
 ) 
 values 
-    ('book', 19.9, 15, 10, 2, 1000),
-    ('pff2 mask', 2.8, 10, 10, 0.01, 50),
-    ('vacuum cleaner', 227.9, 40, 30, 30, 5000);
+    ('book', 1990, 15, 10, 2, 1000),
+    ('pff2 mask', 280, 10, 10, 0.01, 50),
+    ('vacuum cleaner', 22799, 40, 30, 30, 5000);
 
 insert into ecom.stock (
     product_id,

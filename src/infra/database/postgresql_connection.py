@@ -9,8 +9,7 @@ class PostgresConnection:
         self.__dict_cursor = psycopg2.extras.RealDictCursor
 
     def __connect(self):
-        if self.__conn is None:
-            self.__conn = psycopg2.connect(PG_URL)
+        self.__conn = psycopg2.connect(PG_URL)
         return self.__conn
 
     def execute(self, query: str, parameters: tuple = None):

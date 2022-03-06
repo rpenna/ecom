@@ -8,13 +8,16 @@ class CouponRepositoryPostgresql(CouponRepository):
     def __init__(self, pg_connection: PostgresConnection):
         self.__conn = pg_connection
 
-    async def get_by_code(self, code: str) -> Coupon:
+    def get_by_code(self, code: str) -> Coupon:
         query = """
             SELECT code, discount_percentage, expiring_date
             FROM ecom.coupons
             WHERE code = %s
         """
-        coupon_data = self.__conn.query_one(query, code)
+        parameters = (code,)
+        coupon_data = self.__conn.query_one(query, parameters)
+        if not coupon_data:
+            raise CouponNotFound
         return Coupon(
             coupon_data["code"],
             coupon_data["discount_percentage"],

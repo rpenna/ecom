@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from ...database.postgresql_connection import PostgresConnection
 from ....domain.repository.order_repository import OrderRepository
 from ....domain.entity.order import Order
@@ -24,7 +23,7 @@ class OrderRepositoryPostgresql(OrderRepository):
         return "0"
 
     def save(self, order: Order) -> bool:
-        query = """"
+        query = """
             insert into ecom.orders (
                 cpf,
                 issue_date,
@@ -41,10 +40,24 @@ class OrderRepositoryPostgresql(OrderRepository):
             order.coupon.code,
             order.shipping_fee,
         )
-        return self.__conn.execute(query, parameters) == 1
+        self.__conn.execute(query, parameters)
+        for product in order.cart:
+            query = """
+                insert into ecom.order_product (
+                    product_id,
+                    order_code,
+                    quantity,
+                    price
+                )
+                values (%s, %s, %s, %s)
+            """
+            parameters = (product.id, order.code, product.quantity, product.price)
+            if not self.__conn.execute(query, parameters) == 1:
+                return False
+        return True
 
     def get_by_code(self, code: str) -> Order:
-        query = """"
+        query = """
             select
                 cpf,
                 issue_date,
@@ -81,3 +94,9 @@ class OrderRepositoryPostgresql(OrderRepository):
             order.add_to_cart(product["id"], product["price"], product["quantity"])
         order.shipping_fee = order_data["shipping_fee"]
         return order
+
+    def clear(self):
+        query = """
+            delete from ecom.orders
+        """
+        self.__conn.execute(query)
